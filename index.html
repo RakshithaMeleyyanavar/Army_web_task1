@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Apple Watch Stopwatch Design</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navigation Menu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -13,339 +13,314 @@
     }
 
     body {
-      font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background: radial-gradient(circle at 50% 50%, #1c2526, #2e4057, #4a90e2);
-      background-size: 120% 120%;
-      animation: colorfulGlow 8s ease infinite;
-      overflow: hidden;
+      font-family: 'Poppins', Arial, sans-serif;
+      min-height: 200vh; /* Ensure page is scrollable */
+      background: linear-gradient(45deg, #2e3b2a, #4a5a2f, #3c4b2e); /* Camouflage-inspired gradient */
     }
 
-    @keyframes colorfulGlow {
-      0% { background-size: 115% 115%; background-position: 0% 0%; }
-      50% { background-size: 125% 125%; background-position: 50% 50%; }
-      100% { background-size: 115% 115%; background-position: 0% 0%; }
-    }
-
-    .stopwatch-container {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 50%;
-      padding: 40px;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 0 40px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.05);
-      text-align: center;
-      width: 100%;
-      max-width: 450px;
-      aspect-ratio: 1;
-      position: relative;
-      overflow: hidden;
-      transform: scale(0.9);
-      transition: transform 0.5s ease;
-    }
-
-    .stopwatch-container.active {
-      transform: scale(1);
-    }
-
-    .watch-bezel {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      right: 10px;
-      bottom: 10px;
-      border: 2px solid rgba(255, 255, 255, 0.15);
-      border-radius: 50%;
-      z-index: 1;
-      box-shadow: inset 0 0 10px rgba(74, 144, 226, 0.3);
-    }
-
-    .watch-marks {
-      position: absolute;
+    nav {
+      position: fixed;
       top: 0;
-      left: 50%;
-      width: 2px;
-      height: 8px;
-      background: linear-gradient(to bottom, #ff6b6b, #4ecdc4);
-      transform-origin: bottom;
-      animation: rotateMarks 6s linear infinite;
+      width: 100%;
+      background: linear-gradient(45deg, #4a5a2f, #8a7f3d, #6b4e31);
+      background-size: 400%;
+      padding: 15px 0;
+      transition: all 0.4s ease;
+      z-index: 1000;
+      animation: gradientShift 12s ease infinite, slideDown 0.8s ease-out;
     }
 
-    @keyframes rotateMarks {
-      from { transform: translateX(-50%) rotate(0deg); }
-      to { transform: translateX(-50%) rotate(360deg); }
+    nav.scrolled {
+      background: linear-gradient(45deg, #3c4b2e, #6b4e31, #4a7042);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     }
 
-    .display {
-      font-size: 3.5em;
-      font-weight: 600;
-      margin-bottom: 25px;
-      color: #f5f5f7;
-      letter-spacing: 2px;
-      background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(78, 205, 196, 0.2));
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(255, 107, 107, 0.1);
-      position: relative;
-      z-index: 2;
-    }
-
-    .display.running {
-      animation: applePulse 1s infinite alternate, glow 1.5s infinite;
-    }
-
-    @keyframes applePulse {
-      from { transform: scale(1); }
-      to { transform: scale(1.03); }
-    }
-
-    @keyframes glow {
-      0% { box-shadow: 0 0 10px rgba(255, 107, 107, 0.3); }
-      50% { box-shadow: 0 0 20px rgba(78, 205, 196, 0.5); }
-      100% { box-shadow: 0 0 10px rgba(255, 107, 107, 0.3); }
-    }
-
-    .sprinkle {
-      position: absolute;
-      width: 5px;
-      height: 5px;
-      background: radial-gradient(circle, #ff6b6b, #4ecdc4, #4a90e2);
-      border-radius: 50%;
-      pointer-events: none;
-      animation: sprinkleFall 1.2s ease-out forwards;
-      z-index: 3;
-    }
-
-    @keyframes sprinkleFall {
-      0% { opacity: 1; transform: translateY(-20px) scale(0.5); }
-      100% { opacity: 0; transform: translateY(80%) scale(1.2); }
-    }
-
-    .buttons {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 20px;
-      position: relative;
-      z-index: 2;
-    }
-
-    button {
-      padding: 12px 25px;
-      font-size: 1.1em;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      transition: transform 0.2s, background 0.3s;
-      outline: none;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    button:hover {
-      transform: scale(1.05);
-    }
-
-    button:active {
-      transform: scale(0.95);
-    }
-
-    button.clicked .icon {
-      animation: iconGlow 0.5s ease-out;
-    }
-
-    @keyframes iconGlow {
-      0% { text-shadow: 0 0 0px #fff; }
-      50% { text-shadow: 0 0 10px #ff6b6b; }
-      100% { text-shadow: 0 0 0px #fff; }
-    }
-
-    #startPause {
-      background: linear-gradient(135deg, #34c759, #28a745);
-    }
-
-    #lap {
-      background: linear-gradient(135deg, #ffcc00, #ffeb3b);
-    }
-
-    #reset {
-      background: linear-gradient(135deg, #ff2d55, #f44336);
-    }
-
-    .icon {
-      font-size: 1.2em;
-    }
-
-    .laps {
-      list-style: none;
-      max-height: 220px;
-      overflow-y: auto;
-      margin-top: 20px;
-      padding: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      background: linear-gradient(135deg, rgba(255, 107, 107, 0.05), rgba(78, 205, 196, 0.05));
-      border-radius: 10px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .laps li {
-      padding: 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      font-size: 1.2em;
-      color: #f5f5f7;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      margin: 8px 0;
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 0 20px;
     }
 
-    .laps li:last-child {
-      border-bottom: none;
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      gap: 30px;
     }
 
-    .lap-icon {
-      color: #ffeb3b;
+    .nav-menu li {
+      position: relative;
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards;
+      animation-delay: calc(var(--index) * 0.1s);
     }
 
-    @media (max-width: 480px) {
-      .stopwatch-container {
+    .nav-menu li:nth-child(1) { --index: 1; }
+    .nav-menu li:nth-child(2) { --index: 2; }
+    .nav-menu li:nth-child(3) { --index: 3; }
+    .nav-menu li:nth-child(4) { --index: 4; }
+
+    .nav-menu li a {
+      color: #f5f5f5;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 600;
+      padding: 10px 15px;
+      transition: all 0.3s ease;
+      position: relative;
+      display: inline-block;
+    }
+
+    .nav-menu li a:hover {
+      color: #f4d03f;
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(244, 208, 63, 0.6);
+      border-radius: 5px;
+    }
+
+    .nav-menu li a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #f4d03f, #6b4e31);
+      left: 50%;
+      bottom: 5px;
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+
+    .nav-menu li a:hover::after {
+      width: 100%;
+      left: 0;
+    }
+
+    .progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #6b4e31, #f4d03f);
+      width: 0;
+      transition: width 0.2s ease, background 0.4s ease;
+    }
+
+    nav.scrolled .progress-bar {
+      background: linear-gradient(90deg, #4a7042, #f4d03f);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .hamburger span {
+      width: 30px;
+      height: 4px;
+      background: #f5f5f5;
+      margin: 3px 0;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(7px, 7px);
+      background: #f4d03f;
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+      background: #6b4e31;
+    }
+
+    .particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #f4d03f;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: particleFade 1s ease-out forwards;
+      z-index: 999;
+    }
+
+    @keyframes particleFade {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.5);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: linear-gradient(45deg, #4a5a2f, #6b4e31);
+        flex-direction: column;
         padding: 20px;
-        max-width: 350px;
+        text-align: center;
+        animation: slideIn 0.3s ease;
       }
 
-      .display {
-        font-size: 2.5em;
+      .nav-menu.active {
+        display: flex;
       }
 
-      button {
-        padding: 10px 20px;
-        font-size: 1em;
+      .hamburger {
+        display: flex;
       }
+
+      .nav-menu li a {
+        font-size: 20px;
+        padding: 15px;
+      }
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .content {
+      margin-top: 80px;
+      padding: 30px;
+      text-align: center;
+      color: #f5f5f5;
+      background: linear-gradient(45deg, #2e3b2a, #4a5a2f);
+      font-size: 18px;
+    }
+
+    .content h1 {
+      color: #f4d03f;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+
+    .content p {
+      max-width: 800px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
-  <div class="stopwatch-container">
-    <div class="watch-bezel"></div>
-    <div class="watch-marks"></div>
-    <div class="display" id="display">00:00:00.000</div>
-    <div class="buttons">
-      <button id="startPause"><i class="fas fa-play icon"></i> Start</button>
-      <button id="lap" disabled><i class="fas fa-flag-checkered icon"></i> Lap</button>
-      <button id="reset" disabled><i class="fas fa-sync-alt icon"></i> Reset</button>
+  <nav id="navbar">
+    <div class="nav-container">
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#exam-info">Exam Info</a></li>
+        <li><a href="#preparation">Preparation</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="progress-bar" id="progress-bar"></div>
     </div>
-    <ul class="laps" id="laps"></ul>
+  </nav>
+
+  <div class="content">
+    <h1>Army Exam Preparation Hub</h1>
+    <p>Welcome to your ultimate resource for army exam success. Access study materials, practice tests, and expert tips to ace your military entrance exams.</p>
+    <p>Scroll to experience the dynamic camouflage-inspired navigation bar with glowing effects and sparkles. On mobile, tap the hamburger icon for a vibrant menu toggle.</p>
+    <p>Prepare with confidence and join the ranks of the armed forces!</p>
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      let timer;
-      let startTime = 0;
-      let elapsedTime = 0;
-      let isRunning = false;
-      let lapCount = 1;
+    document.addEventListener('DOMContentLoaded', () => {
+      const navbar = document.getElementById('navbar');
+      const progressBar = document.getElementById('progress-bar');
+      const hamburger = document.getElementById('hamburger');
+      const navMenu = document.getElementById('nav-menu');
 
-      const display = document.getElementById('display');
-      const startPauseBtn = document.getElementById('startPause');
-      const lapBtn = document.getElementById('lap');
-      const resetBtn = document.getElementById('reset');
-      const lapsList = document.getElementById('laps');
-      const container = document.querySelector('.stopwatch-container');
-
-      if (!display || !startPauseBtn || !lapBtn || !resetBtn || !lapsList || !container) {
-        console.error('One or more DOM elements not found. Check HTML structure.');
-        return;
-      }
-
-      function formatTime(ms) {
-        const hours = Math.floor(ms / (1000 * 60 * 60)).toString().padStart(2, '0');
-        const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-        const seconds = Math.floor((ms % (1000 * 60)) / 1000).toString().padStart(2, '0');
-        const milliseconds = (ms % 1000).toString().padStart(3, '0');
-        return `${hours}:${minutes}:${seconds}.${milliseconds}`;
-      }
-
-      function updateDisplay() {
-        elapsedTime = Date.now() - startTime;
-        display.textContent = formatTime(elapsedTime);
-      }
-
-      function createSprinkle() {
-        const sprinkle = document.createElement('div');
-        sprinkle.classList.add('sprinkle');
-        sprinkle.style.left = `${Math.random() * 90 + 5}%`;
-        sprinkle.style.top = `${Math.random() * 50}%`;
-        container.appendChild(sprinkle);
-        setTimeout(() => sprinkle.remove(), 1200);
-      }
-
-      function addGlow(event) {
-        const button = event.target.closest('button');
-        const icon = button.querySelector('.icon');
-        if (icon) {
-          icon.classList.add('clicked');
-          setTimeout(() => icon.classList.remove('clicked'), 500);
-        }
-      }
-
-      startPauseBtn.addEventListener('click', (e) => {
-        addGlow(e);
-        if (!isRunning) {
-          startTime = Date.now() - elapsedTime;
-          timer = setInterval(updateDisplay, 16);
-          startPauseBtn.innerHTML = '<i class="fas fa-pause icon"></i> Pause';
-          lapBtn.disabled = false;
-          resetBtn.disabled = false;
-          isRunning = true;
-          display.classList.add('running');
-          container.classList.add('active');
-          for (let i = 0; i < 5; i++) {
-            setTimeout(createSprinkle, i * 150);
-          }
+      // Scroll event for gradient change and progress bar
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+          navbar.classList.add('scrolled');
         } else {
-          clearInterval(timer);
-          startPauseBtn.innerHTML = '<i class="fas fa-play icon"></i> Start';
-          lapBtn.disabled = true;
-          isRunning = false;
-          display.classList.remove('running');
-          container.classList.remove('active');
+          navbar.classList.remove('scrolled');
+        }
+
+        // Update progress bar
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        progressBar.style.width = scrollPercent + '%';
+
+        // Create particle effect on scroll
+        if (Math.random() < 0.1) { // Randomly trigger particles
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          particle.style.left = Math.random() * 100 + 'vw';
+          particle.style.top = '60px';
+          navbar.appendChild(particle);
+          setTimeout(() => particle.remove(), 1000);
         }
       });
 
-      lapBtn.addEventListener('click', (e) => {
-        addGlow(e);
-        const lapTime = formatTime(elapsedTime);
-        const lapItem = document.createElement('li');
-        lapItem.innerHTML = `<span>Lap ${lapCount}</span> <span>${lapTime}</span> <i class="fas fa-stopwatch lap-icon"></i>`;
-        lapsList.appendChild(lapItem);
-        lapCount++;
+      // Hamburger menu toggle
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
       });
 
-      resetBtn.addEventListener('click', (e) => {
-        addGlow(e);
-        clearInterval(timer);
-        startTime = 0;
-        elapsedTime = 0;
-        isRunning = false;
-        display.textContent = '00:00:00.000';
-        startPauseBtn.innerHTML = '<i class="fas fa-play icon"></i> Start';
-        lapBtn.disabled = true;
-        resetBtn.disabled = true;
-        lapsList.innerHTML = '';
-        lapCount = 1;
-        display.classList.remove('running');
-        container.classList.remove('active');
+      // Close mobile menu when clicking a link
+      navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          hamburger.classList.remove('active');
+          navMenu.classList.remove('active');
+        });
       });
-
-      console.log('Stopwatch initialized and ready.');
     });
   </script>
 </body>
