@@ -2,7 +2,7 @@
 ### #SkillCraft Internship – Task 1  
 
 A **simple yet innovative Army Exam themed web page** built using **HTML and CSS** with interactive hover effects and a clean user interface.  
-This project was created as part of my **SkillCraft Internship (Task 1)**, focusing on UI/UX design principles and creative use of CSS animations.  
+This project was created as part of my **SkillCraft Internship (Task 1)**, focusing on UI/UX design principles and creative use of CSS animations 
 
 ---
 
